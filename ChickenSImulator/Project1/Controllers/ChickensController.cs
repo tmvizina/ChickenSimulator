@@ -13,6 +13,8 @@ namespace ChickenSimulator.Controllers
     [ApiController]
     public class ChickensController : ControllerBase
     {
+        ChickenSimulatorContext db = new ChickenSimulatorContext();
+
         private readonly ChickenSimulatorContext _context;
 
         public ChickensController(ChickenSimulatorContext context)
@@ -39,6 +41,13 @@ namespace ChickenSimulator.Controllers
             }
 
             return chicken;
+        }
+
+       [HttpGet("f={farmId}")]
+       public List<Chicken> GetChickensByFarm(int farmId)
+        {
+            List<Chicken> chickens = db.Chickens.Where(x => x.FarmId == farmId).ToList();
+            return chickens;
         }
 
         // PUT: api/Chickens/5
@@ -76,14 +85,38 @@ namespace ChickenSimulator.Controllers
         // POST: api/Chickens
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<Chicken>> PostChicken(Chicken chicken)
+        [HttpPost("a={name}/{farmId}")]
+        public void AddChicken(string name, int farmId)
         {
-            _context.Chickens.Add(chicken);
-            await _context.SaveChangesAsync();
+            Chicken chicken = new Chicken();
+            chicken.Name = name;
+            chicken.FarmId = farmId;
+            List<string> Colors = new List<string>();
+            Colors.Add("Black");
+            Colors.Add("Red");
+            Colors.Add("Brown");
+            Colors.Add("Grey");
+            Colors.Add("White");
+            Random random = new Random();
+            int ranColor = random.Next(0, 4);
+            chicken.Color = Colors[ranColor];
 
-            return CreatedAtAction("GetChicken", new { id = chicken.ChickenId }, chicken);
+            int ranSmarts = random.Next(1, 10);
+            chicken.Smarts = ranSmarts;
+
+            int ranStrength = random.Next(1, 10);
+            chicken.Strength = ranStrength;
+            int ranSpeed = random.Next(1, 10);
+            chicken.Speed = ranSpeed;
+            int ranLuck = random.Next(1, 10);
+            chicken.Luck = ranLuck;
+
+            chicken.Age = 1;
+
+            db.Chickens.Add(chicken);
+            db.SaveChanges();
         }
+        
 
         // DELETE: api/Chickens/5
         [HttpDelete("{id}")]
