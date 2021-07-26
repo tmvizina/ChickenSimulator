@@ -117,7 +117,28 @@ namespace ChickenSimulator.Controllers
             db.Chickens.Add(chicken);
             db.SaveChanges();
         }
-        
+
+        [HttpPost("{farmName}/s={seeds}")]
+        public void AddFarm(string FarmName, int seeds)
+        {
+            Farm farm = new Farm();
+            farm.Name = FarmName;
+            farm.Seeds = seeds;
+
+            db.Farms.Add(farm);
+            db.SaveChanges();
+        }
+
+        [HttpGet("Farm")]
+        public List<Farm> GetFarms()
+        {
+            List<Farm> fList = new List<Farm>();
+            foreach(Farm f in db.Farms)
+            {
+                fList.Add(f);
+            }
+            return fList;
+        }
 
         // DELETE: api/Chickens/5
         [HttpDelete("{id}")]
