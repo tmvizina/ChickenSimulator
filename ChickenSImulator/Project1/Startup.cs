@@ -1,7 +1,9 @@
+using ChickenSimulator.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,6 +12,8 @@ namespace Project1
 {
     public class Startup
     {
+        string connection = "Server=.\\SQLExpress;Database=ChickenSimulator;Trusted_Connection=True;ConnectRetryCount=0;";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -21,6 +25,7 @@ namespace Project1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<ChickenSimulatorContext>(options => options.UseSqlServer(connection));
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
