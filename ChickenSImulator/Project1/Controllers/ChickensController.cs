@@ -90,7 +90,8 @@ namespace ChickenSimulator.Controllers
         {
             Chicken chicken = new Chicken();
             chicken.Name = name;
-            chicken.FarmId = farmId;
+            Farm farm = db.Farms.Where(x => x.FarmId == farmId).ToList().First();
+            chicken.FarmId = farm.FarmId;
             List<string> Colors = new List<string>();
             Colors.Add("Black");
             Colors.Add("Red");

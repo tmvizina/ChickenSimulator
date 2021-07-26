@@ -26,7 +26,7 @@ namespace ChickenSimulator.Models
 
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=.\\MSSQLSERVER01;Database=ChickenSimulator;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=ChickenSimulator;Trusted_Connection=True;");
             }
         }
 
